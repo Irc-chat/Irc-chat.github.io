@@ -27,7 +27,7 @@
             var input = document.getElementById("input-to-chat");
             var display = document.getElementById("display");
             display.append(input.value + "\n");
-
+            display.scrollTop = display.scrollHeight;
             // clear text box
             input.value = ""
         }
