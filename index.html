@@ -1,12 +1,56 @@
 <html>
 <head>
-  <title>This is title</title>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>IRC chat</title>
+    <meta charset="utf-8"/>
 </head>
 <body>
-  <input type="text" name="fio" placeholder="d">
-  <input type="text" name="email" placeholder="s">
-  <input type="submit" value="Отправить">
+
+<!-- HTML -->
+<div class="display-box">
+    <textarea id="display" style="width:100%;height: 100%"></textarea>
+</div>
+
+
+<div class="input-box">
+    <input id="input-to-chat" type="text" size="40" onkeypress="typedSomething(event)"
+           align="bottom" style="width: 100%;">
+</div>
+
+
+<!-- JS -->
+<script>
+
+    function typedSomething(event) {
+        var code = event.which || event.keyCode;
+        // if enter clicked
+        if (code === 13) {
+            var input = document.getElementById("input-to-chat");
+            var display = document.getElementById("display");
+            display.append(input.value + "\n");
+
+            // clear text box
+            input.value = ""
+        }
+    }
+</script>
+
+<!-- CSS -->
+<style>
+    .input-box {
+        width: 100%;
+        position: absolute;
+        bottom: 10px;
+        border: 3px solid #8AC007;
+    }
+
+    .display-box {
+        width: 100%;
+        height: 90%;
+        position: absolute;
+        top: 10px;
+        border: 3px solid #3671c0;
+    }
+</style>
+
 </body>
 </html>
