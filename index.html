@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>IRC chat</title>
@@ -20,17 +21,68 @@
 <!-- JS -->
 <script>
 
+    var port = 10023;
+    var host = "ec2-35-180-30-241.eu-west-3.compute.amazonaws.com";
+
+    var clientID;
+
+    var socket = new WebSocket("ws://" + host + ":" + port);
+
+    socket.onopen = function (event) {
+        displayText("connected to " + "ws://" + host + ":" + port)
+    };
+
+    socket.onmessage = function (event) {
+        displayText(event.data)
+        var msg = JSON.parse(event.data);
+
+        switch (msg.type) {
+            case "id":
+                clientID = msg.id;
+                break;
+            case "username":
+                break;
+            case "message":
+                displayText(msg.text);
+                break;
+            case "rejectusername":
+                break;
+            case "userlist":
+                break;
+        }
+
+    };
+
+    function displayText(text) {
+        display.append(text + "\n");
+        display.scrollTop = display.scrollHeight;
+    }
+
     function typedSomething(event) {
         var code = event.which || event.keyCode;
         // if enter clicked
         if (code === 13) {
             var input = document.getElementById("input-to-chat");
             var display = document.getElementById("display");
-            display.append(input.value + "\n");
-            display.scrollTop = display.scrollHeight;
+            displayText(input.value);
+            sendText(input.value);
             // clear text box
             input.value = ""
         }
+    }
+
+    // Send text to all users through the server
+    function sendText(text) {
+        // Construct a msg object containing the data the server needs to process the message from the chat client.
+        var msg = {
+            type: "message",
+            text: text,
+            id: clientID,
+            date: Date.now()
+        };
+
+        // Send the msg object as a JSON-formatted string.
+        socket.send(JSON.stringify(msg));
     }
 </script>
 
