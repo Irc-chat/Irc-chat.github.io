@@ -54,6 +54,7 @@
     };
 
     function displayText(text) {
+        var display = document.getElementById("display");
         display.append(text + "\n");
         display.scrollTop = display.scrollHeight;
     }
@@ -63,26 +64,14 @@
         // if enter clicked
         if (code === 13) {
             var input = document.getElementById("input-to-chat");
-            var display = document.getElementById("display");
             displayText(input.value);
             sendText(input.value);
-            // clear text box
-            input.value = ""
+            input.value = "";
         }
     }
 
-    // Send text to all users through the server
     function sendText(text) {
-        // Construct a msg object containing the data the server needs to process the message from the chat client.
-        var msg = {
-            type: "message",
-            text: text,
-            id: clientID,
-            date: Date.now()
-        };
-
-        // Send the msg object as a JSON-formatted string.
-        socket.send(JSON.stringify(msg));
+        socket.send(text + "\r\n");
     }
 </script>
 
